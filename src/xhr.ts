@@ -1,5 +1,6 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types';
 import { parseHeaders } from './utils/headers';
+import { createError } from './utils/error';
 
 const xhr = (config: AxiosRequestConfig): AxiosPromise => {
   return new Promise((resolve, reject) => {
@@ -9,17 +10,22 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       method = 'get',
       data = null,
       headers,
-      responseType
+      responseType,
+      timeout
     } = config;
-    // build request
+    // build and set request
     const request = new XMLHttpRequest();
     if (responseType) {
       request.responseType = responseType;
+    }
+    if (timeout) {
+      request.timeout = timeout;
     }
     request.open(method.toUpperCase(), url, true);
     // handle response
     request.onreadystatechange = function () {
       if (this.readyState !== 4) return;
+      if (this.status === 0) return;
       const response : AxiosResponse = {
         data: responseType === 'text' ? this.responseText : this.response,
         status: this.status,
@@ -28,7 +34,19 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
         config,
         request
       };
-      resolve(response);
+      if (response.status >= 200 && response.status < 300) {
+        resolve(response);
+      } else {
+        reject(createError(`Request failed with status code ${response.status}`, config, null, request, response));
+      }
+    };
+    // handle network error
+    request.onerror = function() {
+      reject(createError('Network Error', config, null, request));
+    };
+    // handle timout error
+    request.ontimeout = function() {
+      reject(createError(`Timeout of ${timeout} ms exceed`, config, 'ECONNABORTED', request));
     };
     // set header
     Object.keys(headers).forEach(name => {
