@@ -1,59 +1,15 @@
-import xhr from './xhr';
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types';
-import { buildURL } from './utils/url';
-import { transformRequest, transformResponse } from './utils/data';
-import { processHeaders } from './utils/headers';
+import { AxiosInstance } from './types/index';
+import Axios from './core/Axios';
+import { extend } from './utils/type_check';
 
-/**
- * Get url and params from config, then build url
- * @param config - AxiosRequestConfig
- */
-const transformURL = (config: AxiosRequestConfig): string => {
-  const {
-    url,
-    params
-  } = config;
-  return buildURL(url, params);
+const createInstance = (): AxiosInstance => {
+  const context = new Axios();
+  const instance = Axios.prototype.request.bind(context);
+
+  extend(instance, context);
+  return instance as AxiosInstance;
 };
 
-/**
- * Process data part
- * @param config
- */
-const transformRequestData = (config: AxiosRequestConfig): any => {
-  return transformRequest(config.data);
-}
-
-const transformHeaders = (config: AxiosRequestConfig): any => {
-  const {
-    headers = {},
-    data
-  } = config;
-  return processHeaders(headers, data);
-}
-
-const transformResponseData = (res: AxiosResponse): AxiosResponse => {
-  res.data = transformResponse(res.data);
-  return res;
-}
-
-/**
- * Process Request Config before use it
- * @param config - AxiosRequestConfig
- */
-const processConfig = (config: AxiosRequestConfig): void => {
-  config.url = transformURL(config);
-  // here we need to handle headers before data,
-  // because it depends on data which will be change in transformRequestData function
-  config.headers = transformHeaders(config);
-  config.data = transformRequestData(config);
-};
-
-const axios = (config: AxiosRequestConfig): AxiosPromise => {
-  processConfig(config);
-  return xhr(config).then(res => {
-    return transformResponseData(res);
-  });
-};
+const axios = createInstance();
 
 export default axios;
