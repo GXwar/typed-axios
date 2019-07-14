@@ -22,3 +22,21 @@ export const processHeaders = (headers: any, data: any): any => {
 
   return headers;
 };
+
+export const parseHeaders = (headers: string): any => {
+  let parsed = Object.create(null);
+  if (headers.length === 0) {
+    return parsed;
+  }
+  // get headers line by line, then add key - value pair to the parsed object
+  headers.split('\r\n').forEach(line => {
+    let [key, val] = line.split(':');
+    key = key.trim().toLowerCase();
+    if (!key) return;
+    if (val) {
+      val = val.trim();
+    }
+    parsed[key] = val;
+  });
+  return parsed;
+}
