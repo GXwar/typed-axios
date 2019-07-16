@@ -3,6 +3,7 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
 import { buildURL } from '../utils/url';
 import { transformRequest, transformResponse } from '../utils/data';
 import { processHeaders, flattenHeaders } from '../utils/headers';
+import transform from './transform';
 
 /**
  * Get url and params from config, then build url
@@ -33,7 +34,7 @@ const transformHeaders = (config: AxiosRequestConfig): any => {
 }
 
 const transformResponseData = (res: AxiosResponse): AxiosResponse => {
-  res.data = transformResponse(res.data);
+  res.data = transform(res.data, res.headers, res.config.transformResponse);
   return res;
 }
 
@@ -45,8 +46,9 @@ const processConfig = (config: AxiosRequestConfig): void => {
   config.url = transformURL(config);
   // here we need to handle headers before data,
   // because it depends on data which will be change in transformRequestData function
-  config.headers = transformHeaders(config);
-  config.data = transformRequestData(config);
+  // config.headers = transformHeaders(config);
+  // config.data = transformRequestData(config);
+  config.data = transform(config.data, config.headers, config.transformRequest);
   config.headers = flattenHeaders(config.headers, config.method!);
 };
 

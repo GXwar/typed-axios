@@ -10,7 +10,7 @@ const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
   extend(instance, context);
   return instance as AxiosInstance;
 };
-
+// load default configs for request
 const axios = createInstance(defaults);
 
 export default axios;
