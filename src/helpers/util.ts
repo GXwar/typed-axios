@@ -4,13 +4,17 @@ export const isDate = (val: any): val is Date => {
   return toString.call(val) === '[object Date]';
 }
 
-// export const isObject = (val: any): val is Object => {
-//   return val != null && typeof val === 'object';
-// };
-
 export const isPlainObject = (val: any): val is Object => {
   return toString.call(val) === '[object Object]';
 }
+
+export const isFormData = (val: any): val is FormData => {
+  return typeof val != 'undefined' && val instanceof FormData
+};
+
+export const isURLSearchParams = (val: any): val is URLSearchParams => {
+  return typeof val != 'undefined' && val instanceof URLSearchParams;
+};
 
 export const extend = <T, U>(to: T, from: U): T & U => {
   for (const key in from) {
