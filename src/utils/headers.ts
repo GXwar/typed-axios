@@ -1,6 +1,11 @@
 import { isPlainObject, deepMerge } from './type_check';
 import { Method } from '../types/index';
 
+/**
+ * Normalize headers name
+ * @param headers
+ * @param normalizedName
+ */
 const normalizeHeaderName = (headers: any, normalizedName: string): void => {
   if (!headers) return;
   Object.keys(headers).forEach(name => {
@@ -10,8 +15,13 @@ const normalizeHeaderName = (headers: any, normalizedName: string): void => {
       delete headers[name];
     }
   })
-}
+};
 
+/**
+ * If data is a plain object, we set 'Content-Type' as 'application/json;charset=utf-8';
+ * @param headers
+ * @param data
+ */
 export const processHeaders = (headers: any, data: any): any => {
   normalizeHeaderName(headers, 'Content-Type');
 
