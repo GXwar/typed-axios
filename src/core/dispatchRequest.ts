@@ -1,8 +1,8 @@
 import xhr from './xhr';
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
-import { buildURL } from '../utils/url';
-import { transformRequest, transformResponse } from '../utils/data';
-import { processHeaders, flattenHeaders } from '../utils/headers';
+import { buildURL } from '../helpers/url';
+import { transformRequest, transformResponse } from '../helpers/data';
+import { processHeaders, flattenHeaders } from '../helpers/headers';
 import transform from './transform';
 
 /**

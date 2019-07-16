@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn } from '../types/index';
+import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn } from '../types';
 import dispatchRequest from './dispatchRequest';
 import InterceptorManger from './interceptorManager';
 import mergeConfig from './mergeConfig';

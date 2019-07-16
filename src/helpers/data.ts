@@ -1,4 +1,4 @@
-import { isPlainObject } from './type_check';
+import { isPlainObject } from './util';
 
 export const transformRequest = (data: any): any => {
   if (isPlainObject(data)) {

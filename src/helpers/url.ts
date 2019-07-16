@@ -1,7 +1,7 @@
 import {
   isDate,
   isPlainObject
-} from './type_check';
+} from './util';
 
 /**
  * Encodes a text string and don't escape special characters

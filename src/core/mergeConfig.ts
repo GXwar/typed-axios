@@ -1,5 +1,5 @@
-import { AxiosRequestConfig } from '../types/index';
-import { isPlainObject, deepMerge } from '../utils/type_check';
+import { AxiosRequestConfig } from '../types';
+import { isPlainObject, deepMerge } from '../helpers/util';
 
 /**
  * Default Strategy: if

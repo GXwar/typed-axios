@@ -1,5 +1,5 @@
-import { isPlainObject, deepMerge } from './type_check';
-import { Method } from '../types/index';
+import { isPlainObject, deepMerge } from './util';
+import { Method } from '../types';
 
 /**
  * Normalize headers name
