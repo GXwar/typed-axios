@@ -1,7 +1,4 @@
-import {
-  isDate,
-  isPlainObject
-} from './util';
+import { isDate, isPlainObject } from './util';
 
 /**
  * Encodes a text string and don't escape special characters
@@ -10,12 +7,12 @@ import {
 const encode = (val: string): string => {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
-    .replace(/%3A/ig, ':')
+    .replace(/%3A/gi, ':')
     .replace(/%24/g, '$')
-    .replace(/%2C/ig, ',')
+    .replace(/%2C/gi, ',')
     .replace(/%20/g, '+')
-    .replace(/%5B/ig, '[')
-    .replace(/%5D/ig, ']');
+    .replace(/%5B/gi, '[')
+    .replace(/%5D/gi, ']');
 };
 
 export const buildURL = (url: string, params?: any): string => {

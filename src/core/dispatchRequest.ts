@@ -1,8 +1,7 @@
 import xhr from './xhr';
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
 import { buildURL } from '../helpers/url';
-import { transformRequest, transformResponse } from '../helpers/data';
-import { processHeaders, flattenHeaders } from '../helpers/headers';
+import { flattenHeaders } from '../helpers/headers';
 import transform from './transform';
 
 /**
@@ -14,13 +13,15 @@ const transformURL = (config: AxiosRequestConfig): string => {
     url,
     params
   } = config;
+  // url is always non-null
+  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
   return buildURL(url!, params);
 };
 
 const transformResponseData = (res: AxiosResponse): AxiosResponse => {
   res.data = transform(res.data, res.headers, res.config.transformResponse);
   return res;
-}
+};
 
 /**
  * Process Request Config before use it
@@ -30,6 +31,8 @@ const processConfig = (config: AxiosRequestConfig): void => {
   config.url = transformURL(config);
   // process headers and data
   config.data = transform(config.data, config.headers, config.transformRequest);
+  // config.method is always non-null
+  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
   config.headers = flattenHeaders(config.headers, config.method!);
 };
 

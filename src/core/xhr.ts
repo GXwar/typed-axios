@@ -21,12 +21,14 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     if (timeout) {
       request.timeout = timeout;
     }
+    // url is always non-null
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     request.open(method.toUpperCase(), url!, true);
     // handle response
     request.onreadystatechange = function () {
       if (this.readyState !== 4) return;
       if (this.status === 0) return;
-      const response : AxiosResponse = {
+      const response: AxiosResponse = {
         data: responseType === 'text' ? this.responseText : this.response,
         status: this.status,
         statusText: this.statusText,

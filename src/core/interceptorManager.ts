@@ -6,13 +6,13 @@ interface Interceptor<T> {
 }
 
 export default class InterceptorManger<T> {
-  private interceptors: Array<Interceptor<T> | null>;
+  private interceptors: (Interceptor<T> | null)[];
 
-  constructor() {
+  public constructor() {
     this.interceptors = [];
   }
 
-  use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number {
+  public use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number {
     this.interceptors.push({
       resolved,
       rejected
@@ -20,7 +20,7 @@ export default class InterceptorManger<T> {
     return this.interceptors.length - 1;
   }
 
-  forEach(fn: (Interceptor: Interceptor<T>) => void): void {
+  public forEach(fn: (Interceptor: Interceptor<T>) => void): void {
     this.interceptors.forEach(interceptor => {
       if (interceptor !== null) {
         fn(interceptor);
@@ -28,7 +28,7 @@ export default class InterceptorManger<T> {
     });
   }
 
-  eject(id: number): void {
+  public eject(id: number): void {
     if (this.interceptors[id]) {
       this.interceptors[id] = null;
     }

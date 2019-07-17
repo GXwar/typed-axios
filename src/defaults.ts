@@ -18,7 +18,7 @@ const defaults: AxiosRequestConfig = {
   ],
   transformResponse: [
     (data: any): any => {
-      return transformResponse(data)
+      return transformResponse(data);
     }
   ]
 };

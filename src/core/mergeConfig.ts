@@ -17,7 +17,7 @@ const defaultStrat = (val1: any, val2: any): any => {
  */
 const fromVal2Strat = (val1: any, val2: any): any => {
   if (typeof val2 !== 'undefined') return val2;
-}
+};
 
 const deepMergeStrat = (val1: any, val2: any): any => {
   if (isPlainObject(val2)) {
@@ -29,7 +29,7 @@ const deepMergeStrat = (val1: any, val2: any): any => {
   } else if (typeof val1 !== 'undefined') {
     return val1;
   }
-}
+};
 
 const strats = Object.create(null);
 // For 'url', 'params', 'data' fields, it must be assigned by user.
@@ -42,7 +42,7 @@ stratKeysFromVal2.forEach(key => {
 const stratKeysDeepMerge = ['headers'];
 stratKeysDeepMerge.forEach(key => {
   strats[key] = deepMergeStrat;
-})
+});
 
 /**
  * Config2 is prior than config1. For any key, we always get the value in Config2 unless Config2 doesn't have it
@@ -56,6 +56,14 @@ const mergeConfig = (config1: AxiosRequestConfig, config2?: AxiosRequestConfig):
   // create a empty object whose prototype is null
   const config = Object.create(null);
 
+  // helper function
+  const mergeField = (key: string): void => {
+    const strategy = strats[key] || defaultStrat;
+    // config2 is always non-null, if it doesn't exist, we create a empty object
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+    config[key] = strategy(config1[key], config2![key]);
+  };
+
   for (let key in config2) {
     mergeField(key);
   }
@@ -66,10 +74,6 @@ const mergeConfig = (config1: AxiosRequestConfig, config2?: AxiosRequestConfig):
     }
   }
 
-  function mergeField(key: string): void {
-    const strategy = strats[key] || defaultStrat;
-    config[key] = strategy(config1[key], config2![key]);
-  }
   return config;
 };
 

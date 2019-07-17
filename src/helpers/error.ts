@@ -1,13 +1,13 @@
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 
 export class AxiosError extends Error {
-  isAxiosError: boolean;
-  config: AxiosRequestConfig;
-  code?: string | null;
-  request?: any;
-  response?: AxiosResponse;
+  public isAxiosError: boolean;
+  public config: AxiosRequestConfig;
+  public code?: string | null;
+  public request?: any;
+  public response?: AxiosResponse;
 
-  constructor(message: string, config: AxiosRequestConfig, code?: string | null, reqeust?: any, response?: AxiosResponse) {
+  public constructor(message: string, config: AxiosRequestConfig, code?: string | null, reqeust?: any, response?: AxiosResponse) {
     super(message);
     this.config = config;
     this.code = code;

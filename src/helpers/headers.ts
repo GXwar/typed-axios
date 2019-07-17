@@ -14,7 +14,7 @@ const normalizeHeaderName = (headers: any, normalizedName: string): void => {
       headers[normalizedName] = headers[name];
       delete headers[name];
     }
-  })
+  });
 };
 
 /**
@@ -50,7 +50,7 @@ export const parseHeaders = (headers: string): any => {
     parsed[key] = val;
   });
   return parsed;
-}
+};
 
 export const flattenHeaders = (headers: any, method: Method): any => {
   if (!headers) {
