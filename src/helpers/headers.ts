@@ -18,7 +18,7 @@ const normalizeHeaderName = (headers: any, normalizedName: string): void => {
 };
 
 /**
- * If data is a plain object, we set 'Content-Type' as 'application/json;charset=utf-8';
+ * Normalize the headers. Then if data is a plain object, we set 'Content-Type' as 'application/json;charset=utf-8'
  * @param headers
  * @param data
  */
@@ -41,12 +41,10 @@ export const parseHeaders = (headers: string): any => {
   }
   // get headers line by line, then add key - value pair to the parsed object
   headers.split('\r\n').forEach(line => {
-    let [key, val] = line.split(':');
+    let [key, ...vals] = line.split(':');
     key = key.trim().toLowerCase();
     if (!key) return;
-    if (val) {
-      val = val.trim();
-    }
+    const val = vals.join(':').trim();
     parsed[key] = val;
   });
   return parsed;
