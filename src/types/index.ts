@@ -88,3 +88,8 @@ export interface RejectedFn {
 export interface AxiosTransformer {
   (data: any, headers?: any): any;
 }
+
+export interface AxiosBasicCredentials {
+  username: string;
+  password: string;
+}
