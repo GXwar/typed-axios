@@ -15,6 +15,11 @@ const encode = (val: string): string => {
     .replace(/%5D/gi, ']');
 };
 
+/**
+ * Add params to url
+ * @param url
+ * @param params
+ */
 export const buildURL = (url: string, params?: any): string => {
   if (!params) {
     return url;

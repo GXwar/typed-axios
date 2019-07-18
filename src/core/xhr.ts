@@ -11,7 +11,8 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       data = null,
       headers,
       responseType,
-      timeout
+      timeout,
+      withCredentials
     } = config;
     // build and set request
     const request = new XMLHttpRequest();
@@ -20,6 +21,9 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     }
     if (timeout) {
       request.timeout = timeout;
+    }
+    if (withCredentials) {
+      request.withCredentials = withCredentials;
     }
     // url is always non-null
     /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
