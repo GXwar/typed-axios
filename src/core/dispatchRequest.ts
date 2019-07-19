@@ -8,7 +8,7 @@ import transform from './transform';
  * Get url and params from config, then build the wholeurl
  * @param config - AxiosRequestConfig
  */
-const transformURL = (config: AxiosRequestConfig): string => {
+export const transformURL = (config: AxiosRequestConfig): string => {
   let { url, params, paramsSerializer, baseURL } = config;
   if (baseURL && url && !isAbsoluteURL(url)) {
     url = combineURL(baseURL, url);

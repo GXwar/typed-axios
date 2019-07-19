@@ -19,4 +19,16 @@ axios.create = (config?: AxiosRequestConfig): AxiosInstance => {
   return createInstance(mergeConfig(defaults, config));
 };
 
+axios.all = <T>(promises: (T | Promise<T>)[]): Promise<T[]> => {
+  return Promise.all(promises);
+};
+
+axios.spread = <T, R>(callback: (...args: T[]) => R): (arr: T[]) => R => {
+  return (arr) => {
+    return callback.apply(null, arr);
+  };
+};
+
+axios.Axios = Axios;
+
 export default axios;

@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn } from '../types';
-import dispatchRequest from './dispatchRequest';
+import dispatchRequest, { transformURL } from './dispatchRequest';
 import InterceptorManger from './interceptorManager';
 import mergeConfig from './mergeConfig';
 
@@ -88,14 +88,19 @@ export default class Axios {
     return this._requestMethodWithData('patch', url, data, config);
   }
 
-  public _requestMethodWithoutData(method: Method, url: string, config?: AxiosRequestConfig): AxiosPromise {
+  public getUri(config?: AxiosRequestConfig): string {
+    config = mergeConfig(this.defaults, config);
+    return transformURL(config);
+  }
+
+  private _requestMethodWithoutData(method: Method, url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this.request(Object.assign(config || {}, {
       method,
       url
     }));
   }
 
-  public _requestMethodWithData(method: Method, url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
+  private _requestMethodWithData(method: Method, url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this.request(Object.assign(config || {}, {
       method,
       url,
