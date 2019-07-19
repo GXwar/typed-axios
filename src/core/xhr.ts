@@ -21,7 +21,7 @@ const configureRequest = (request: XMLHttpRequest, config: AxiosRequestConfig): 
 
 const addEvents = (request: XMLHttpRequest, config: AxiosRequestConfig,
   resolve: (value?: AxiosResponse<any> | PromiseLike<AxiosResponse<any>> | undefined) => void, reject: (reason?: any) => void): void => {
-  const { timeout, onDownloadProgress, onUploadProgress, responseType } = config;
+  const { timeout, validateStatus, onDownloadProgress, onUploadProgress, responseType } = config;
   // handle response
   request.onreadystatechange = function () {
     if (this.readyState !== 4) return;
@@ -34,7 +34,7 @@ const addEvents = (request: XMLHttpRequest, config: AxiosRequestConfig,
       config,
       request
     };
-    if (response.status >= 200 && response.status < 300) {
+    if (!validateStatus || validateStatus(response.status)) {
       resolve(response);
     } else {
       reject(createError(`Request failed with status code ${response.status}`, config, null, request, response));
