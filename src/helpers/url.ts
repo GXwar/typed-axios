@@ -1,5 +1,12 @@
 import { isDate, isPlainObject } from './util';
 
+/**************************************** helper functions ****************************************/
+
+interface URLOrigin {
+  protocol: string;
+  host: string;
+}
+
 /**
  * Encodes a text string and don't escape special characters
  * @param val
@@ -14,6 +21,19 @@ const encode = (val: string): string => {
     .replace(/%5B/gi, '[')
     .replace(/%5D/gi, ']');
 };
+
+const urlParsingNode = document.createElement('a');
+const resolveURL = (url: string): URLOrigin => {
+  urlParsingNode.setAttribute('href', url);
+  const { protocol, host } = urlParsingNode;
+
+  return {
+    protocol,
+    host
+  };
+};
+
+/**************************************** export functions ****************************************/
 
 /**
  * Add params to url
@@ -56,4 +76,10 @@ export const buildURL = (url: string, params?: any): string => {
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
   }
   return url;
+};
+
+const currentOrigin = resolveURL(window.location.href);
+export const isURLSameOrigin = (requestURL: string): boolean => {
+  const parsedOrigin = resolveURL(requestURL);
+  return (parsedOrigin.protocol === currentOrigin.protocol && parsedOrigin.host === currentOrigin.host);
 };

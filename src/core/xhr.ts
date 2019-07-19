@@ -1,6 +1,8 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
 import { parseHeaders } from '../helpers/headers';
 import { createError } from '../helpers/error';
+import { isURLSameOrigin } from '../helpers/url';
+import cookie from '../helpers/cookie';
 
 const xhr = (config: AxiosRequestConfig): AxiosPromise => {
   return new Promise((resolve, reject) => {
@@ -12,8 +14,11 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       headers,
       responseType,
       timeout,
-      withCredentials
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName
     } = config;
+
     // build and set request
     const request = new XMLHttpRequest();
     if (responseType) {
@@ -25,6 +30,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     if (withCredentials) {
       request.withCredentials = withCredentials;
     }
+
     // url is always non-null
     /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     request.open(method.toUpperCase(), url!, true);
@@ -46,6 +52,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
         reject(createError(`Request failed with status code ${response.status}`, config, null, request, response));
       }
     };
+
     // handle network error
     request.onerror = function() {
       reject(createError('Network Error', config, null, request));
@@ -54,7 +61,16 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     request.ontimeout = function() {
       reject(createError(`Timeout of ${timeout} ms exceed`, config, 'ECONNABORTED', request));
     };
-    // set header
+
+    // Set header
+    // url is always non-null
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+      const xsrfValue = cookie.read(xsrfCookieName);
+      if (xsrfValue && xsrfHeaderName) {
+        headers[xsrfHeaderName] = xsrfValue;
+      }
+    }
     Object.keys(headers).forEach(name => {
       // if there is no data, we don't need to set 'Content-Type' attribute for Request
       if (data === null && name.toLowerCase() === 'content-type') {
