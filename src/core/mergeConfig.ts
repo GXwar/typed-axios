@@ -32,14 +32,14 @@ const deepMergeStrat = (val1: any, val2: any): any => {
 };
 
 const strats = Object.create(null);
-// For 'url', 'params', 'data' fields, it must be assigned by user.
+// For 'url', 'params', 'data' fields, it must be assigned by each request.
 // So there we can just get these values for Val2.
 const stratKeysFromVal2 = ['url', 'params', 'data'];
 stratKeysFromVal2.forEach(key => {
   strats[key] = fromVal2Strat;
 });
-// For 'headers', we can use deepMergeStrat.
-const stratKeysDeepMerge = ['headers'];
+// For 'headers', 'auth', we can use deepMergeStrat because it could be assigned for each request.
+const stratKeysDeepMerge = ['headers', 'auth'];
 stratKeysDeepMerge.forEach(key => {
   strats[key] = deepMergeStrat;
 });

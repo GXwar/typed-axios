@@ -58,7 +58,7 @@ const addEvents = (request: XMLHttpRequest, config: AxiosRequestConfig,
 };
 
 const processHeaders = (request: XMLHttpRequest, config: AxiosRequestConfig): void => {
-  const { data, headers, withCredentials, url, xsrfCookieName, xsrfHeaderName } = config;
+  const { data, headers, withCredentials, url, auth, xsrfCookieName, xsrfHeaderName } = config;
   if (isFormData(data)) {
     delete headers['Content-Type'];
   }
@@ -69,6 +69,9 @@ const processHeaders = (request: XMLHttpRequest, config: AxiosRequestConfig): vo
     if (xsrfValue && xsrfHeaderName) {
       headers[xsrfHeaderName] = xsrfValue;
     }
+  }
+  if (auth) {
+    headers['Authorization'] = `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
   }
   Object.keys(headers).forEach(name => {
     // if there is no data, we don't need to set 'Content-Type' attribute for Request
@@ -95,7 +98,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     // url is always non-null
     /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     request.open(method.toUpperCase(), url!, true);
-    configureRequest(request, config); 
+    configureRequest(request, config);
     addEvents(request, config, resolve, reject);
     processHeaders(request, config);
     // send request
