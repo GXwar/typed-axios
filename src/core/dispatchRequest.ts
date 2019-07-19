@@ -40,6 +40,11 @@ const dispatchRequest = (config: AxiosRequestConfig): AxiosPromise => {
   processConfig(config);
   return xhr(config).then(res => {
     return transformResponseData(res);
+  }).catch(e => {
+    if (e && e.response) {
+      e.response = transformResponseData(e.response);
+    }
+    return Promise.reject(e);
   });
 };
 
