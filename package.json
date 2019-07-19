@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "node examples/server.js",
     "lint": "eslint src --ext .ts",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "jest": {
     "transform": {

@@ -58,7 +58,7 @@ const addEvents = (request: XMLHttpRequest, config: AxiosRequestConfig,
 };
 
 const processHeaders = (request: XMLHttpRequest, config: AxiosRequestConfig): void => {
-  const { data, headers, withCredentials, url, auth, xsrfCookieName, xsrfHeaderName } = config;
+  const { data = null, headers = {}, withCredentials, url, auth, xsrfCookieName, xsrfHeaderName } = config;
   if (isFormData(data)) {
     delete headers['Content-Type'];
   }
