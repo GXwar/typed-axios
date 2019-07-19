@@ -11,11 +11,12 @@ import transform from './transform';
 const transformURL = (config: AxiosRequestConfig): string => {
   const {
     url,
-    params
+    params,
+    paramsSerializer
   } = config;
   // url is always non-null
   /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-  return buildURL(url!, params);
+  return buildURL(url!, params, paramsSerializer);
 };
 
 const transformResponseData = (res: AxiosResponse): AxiosResponse => {
