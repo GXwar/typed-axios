@@ -34,7 +34,6 @@ const resolveURL = (url: string): URLOrigin => {
 };
 
 /**************************************** export functions ****************************************/
-
 /**
  * Add params to url
  * @param url
@@ -84,6 +83,14 @@ export const buildURL = (url: string, params?: any, paramsSerializer?: (params: 
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
   }
   return url;
+};
+
+export const isAbsoluteURL = (url: string): boolean => {
+  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+export const combineURL = (baseURL: string, relativeURL?: string): string => {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL;
 };
 
 const currentOrigin = resolveURL(window.location.href);

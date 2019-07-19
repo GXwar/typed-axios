@@ -1,6 +1,6 @@
 import xhr from './xhr';
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
-import { buildURL } from '../helpers/url';
+import { buildURL, combineURL, isAbsoluteURL } from '../helpers/url';
 import { flattenHeaders } from '../helpers/headers';
 import transform from './transform';
 
@@ -9,11 +9,10 @@ import transform from './transform';
  * @param config - AxiosRequestConfig
  */
 const transformURL = (config: AxiosRequestConfig): string => {
-  const {
-    url,
-    params,
-    paramsSerializer
-  } = config;
+  let { url, params, paramsSerializer, baseURL } = config;
+  if (baseURL && url && !isAbsoluteURL(url)) {
+    url = combineURL(baseURL, url);
+  }
   // url is always non-null
   /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
   return buildURL(url!, params, paramsSerializer);
