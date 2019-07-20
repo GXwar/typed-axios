@@ -1,8 +1,11 @@
 examples/
-node_modules/
 docs/
 coverage/
+manual/
 .vscode/
+node_modules/
+dist/
+.rpt2_cache/
 
 package-lock.json
 test.js
