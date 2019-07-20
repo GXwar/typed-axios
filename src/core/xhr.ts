@@ -27,7 +27,7 @@ const addEvents = (request: XMLHttpRequest, config: AxiosRequestConfig,
     if (this.readyState !== 4) return;
     if (this.status === 0) return;
     const response: AxiosResponse = {
-      data: responseType === 'text' ? this.responseText : this.response,
+      data: responseType && responseType !== 'text' ? this.response : this.responseText,
       status: this.status,
       statusText: this.statusText,
       headers: parseHeaders(this.getAllResponseHeaders()),
@@ -89,7 +89,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     // get data from request config
     const {
       url,
-      method = 'get',
+      method,
       data = null
     } = config;
 
@@ -97,7 +97,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     const request = new XMLHttpRequest();
     // url is always non-null
     /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-    request.open(method.toUpperCase(), url!, true);
+    request.open(method!.toUpperCase(), url!, true);
     configureRequest(request, config);
     addEvents(request, config, resolve, reject);
     processHeaders(request, config);

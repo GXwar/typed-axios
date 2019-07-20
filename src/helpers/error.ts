@@ -7,6 +7,7 @@ export class AxiosError extends Error {
   public request?: any;
   public response?: AxiosResponse;
 
+  /* istanbul ignore next */
   public constructor(message: string, config: AxiosRequestConfig, code?: string | null, reqeust?: any, response?: AxiosResponse) {
     super(message);
     this.config = config;
